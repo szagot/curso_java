@@ -1,6 +1,9 @@
 package entities;
 
-public class SavingsAccount extends Account {
+/**
+ * O "final" impede que a classe SavingsAccount seja herdada por outra classe
+ */
+public final class SavingsAccount extends Account {
 
 	private Double interestRate;
 
@@ -30,9 +33,10 @@ public class SavingsAccount extends Account {
 
 	/**
 	 * Sobreposição. Use sempre a notação @Override
+	 * O "final" impede que e esse método seja sobreposto por uma subclasse
 	 */
 	@Override
-	public void withdraw(double amount) {
+	public final void withdraw(double amount) {
 		// Na conta poupança não tem nenhuma taxa
 		balance -= amount;
 	}
