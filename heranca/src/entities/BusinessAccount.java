@@ -5,8 +5,8 @@ package entities;
  */
 public class BusinessAccount extends Account {
 
-	private static final double discount = 10;
-	private static final double taxIncrease = 2;
+	private static final double DISCOUNT = 10;
+	private static final double TAX_INCREASE = 2;
 
 	private Double loanLimit;
 
@@ -39,7 +39,7 @@ public class BusinessAccount extends Account {
 		if (amount <= loanLimit) {
 			// Isso só é permitido, pq balance é protected. Caso contrário, não seria
 			// possível acessar o atributo
-			balance += amount - discount;
+			balance += amount - DISCOUNT;
 		}
 	}
 
@@ -51,7 +51,7 @@ public class BusinessAccount extends Account {
 		// É executada o método da superclasse
 		super.withdraw(amount);
 		// Na conta de PJ tem uma taxa a mais
-		balance -= taxIncrease;
+		balance -= TAX_INCREASE;
 	}
 
 }

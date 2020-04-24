@@ -2,7 +2,7 @@ package entities;
 
 public class Account {
 
-	private static final double tax = 5;
+	private static final double TAX = 5;
 	
 	private Integer number;
 	private String holder;
@@ -43,7 +43,7 @@ public class Account {
 	 * @param amount
 	 */
 	public void withdraw(double amount) {
-		balance -= amount + tax;
+		balance -= amount + TAX;
 	}
 
 	/**
