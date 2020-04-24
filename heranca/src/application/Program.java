@@ -48,6 +48,22 @@ public class Program {
 			acc5.updateBalance();
 			System.out.println("Update!");
 		}
+		
+		System.out.println("-------");
+
+		// Exemplo de sobreposição
+		Account contaCorrente = new Account(3000, "Daniel", 1000.0);
+		Account contaPoupanca = new SavingsAccount(3000, "Daniel", 1000.0, 0.03);
+		Account contaPJ = new BusinessAccount(3000, "Daniel", 1000.0, 500.0);
+		// Sacando de cada conta o mesmo valor
+		contaCorrente.withdraw(200.0);
+		contaPoupanca.withdraw(200.0);
+		contaPJ.withdraw(200.0);
+		System.out.printf("Conta Corrente: R$ %.2f\n", contaCorrente.getBalance());
+		// Aqui não terá tido desconto, por causa da sobreposição do método withdraw
+		System.out.printf("Conta Poupança: R$ %.2f\n", contaPoupanca.getBalance());
+		// Aqui será obtido um desconto maior, por causa da sobreposição do método withdraw
+		System.out.printf("Conta PJ......: R$ %.2f\n", contaPJ.getBalance());
 
 	}
 

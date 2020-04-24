@@ -27,4 +27,13 @@ public class SavingsAccount extends Account {
 	public void updateBalance() {
 		balance += balance * interestRate;
 	}
+
+	/**
+	 * Sobreposição. Use sempre a notação @Override
+	 */
+	@Override
+	public void withdraw(double amount) {
+		// Na conta poupança não tem nenhuma taxa
+		balance -= amount;
+	}
 }

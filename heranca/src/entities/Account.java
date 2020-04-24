@@ -2,6 +2,8 @@ package entities;
 
 public class Account {
 
+	private static final double tax = 5;
+	
 	private Integer number;
 	private String holder;
 	// Permite que seja acessado pelas subclasses
@@ -40,8 +42,8 @@ public class Account {
 	 * Saque
 	 * @param amount
 	 */
-	public void withdwar(double amount) {
-		balance -= amount;
+	public void withdraw(double amount) {
+		balance -= amount + tax;
 	}
 
 	/**

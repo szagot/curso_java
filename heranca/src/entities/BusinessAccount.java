@@ -6,6 +6,7 @@ package entities;
 public class BusinessAccount extends Account {
 
 	private static final double discount = 10;
+	private static final double taxIncrease = 2;
 
 	private Double loanLimit;
 
@@ -40,6 +41,17 @@ public class BusinessAccount extends Account {
 			// possível acessar o atributo
 			balance += amount - discount;
 		}
+	}
+
+	/**
+	 * Sobreposição. Use sempre a notação @Override
+	 */
+	@Override
+	public void withdraw(double amount) {
+		// É executada o método da superclasse
+		super.withdraw(amount);
+		// Na conta de PJ tem uma taxa a mais
+		balance -= taxIncrease;
 	}
 
 }
