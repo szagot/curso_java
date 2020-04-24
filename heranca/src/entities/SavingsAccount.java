@@ -34,6 +34,7 @@ public final class SavingsAccount extends Account {
 	/**
 	 * Sobreposição. Use sempre a notação @Override
 	 * O "final" impede que e esse método seja sobreposto por uma subclasse
+	 * é recomendado usar o final quando o método foi sobreposto
 	 */
 	@Override
 	public final void withdraw(double amount) {
