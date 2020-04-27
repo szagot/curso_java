@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.exceptions.ReservationExcepetion;
+
 public class Reservation {
 
 	private Integer roomNumber;
@@ -12,7 +14,12 @@ public class Reservation {
 
 	public static SimpleDateFormat dateMask = new SimpleDateFormat("dd/MM/yyyy");
 
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws ReservationExcepetion {
+		// Verificando se a data da check-in é < check-out
+		if (!checkOut.after(checkIn)) {
+			throw new ReservationExcepetion("A data do check-out precisa ser posterior a data do check-in");
+		}
+		
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -53,18 +60,19 @@ public class Reservation {
 	 * 
 	 * @param checkIn
 	 * @param checkOut
+	 * @throws ReservationExcepetion
 	 */
-	public void updateDate(Date checkIn, Date checkOut) {
+	public void updateDate(Date checkIn, Date checkOut) throws ReservationExcepetion {
 		// Analisando se as novas datas são posteriores a hoje
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
 			// Lançando uma exceção para o tipo de exceção: Argumentos inválidos
-			throw new IllegalArgumentException("As datas devem ser futuras.");
+			throw new ReservationExcepetion("As datas devem ser futuras.");
 		}
 
 		// Verificando se a data da check-in é < check-out
 		if (!checkOut.after(checkIn)) {
-			throw new IllegalArgumentException("A data do check-out precisa ser posterior a data do check-in");
+			throw new ReservationExcepetion("A data do check-out precisa ser posterior a data do check-in");
 		}
 
 		this.checkIn = checkIn;

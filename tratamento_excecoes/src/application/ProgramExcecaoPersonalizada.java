@@ -6,6 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.entities.Reservation;
+import model.exceptions.ReservationExcepetion;
 
 public class ProgramExcecaoPersonalizada {
 
@@ -69,7 +70,7 @@ public class ProgramExcecaoPersonalizada {
 		}
 		
 		// Capturando erros personalizados
-		catch(IllegalArgumentException e) {
+		catch(ReservationExcepetion e) {
 			System.out.println("Erro na reserva: " + e.getMessage());
 		}
 
