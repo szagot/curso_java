@@ -54,22 +54,21 @@ public class Reservation {
 	 * @param checkIn
 	 * @param checkOut
 	 */
-	public String updateDate(Date checkIn, Date checkOut) {
+	public void updateDate(Date checkIn, Date checkOut) {
 		// Analisando se as novas datas são posteriores a hoje
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "A datas devem ser futuras.";
+			// Lançando uma exceção para o tipo de exceção: Argumentos inválidos
+			throw new IllegalArgumentException("As datas devem ser futuras.");
 		}
 
-		// Verificando se a data da checkin é < checkout
+		// Verificando se a data da check-in é < check-out
 		if (!checkOut.after(checkIn)) {
-			return "A data do check-out precisa ser posterior a data do check-in";
+			throw new IllegalArgumentException("A data do check-out precisa ser posterior a data do check-in");
 		}
 
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-
-		return null;
 	}
 
 	@Override

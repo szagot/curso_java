@@ -2,13 +2,14 @@ package application;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.entities.Reservation;
 
 public class ProgramExcecaoPersonalizada {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 
 		/**
 		 * Fazer um programa para ler os dados de uma reserva de hotel (número do
@@ -22,23 +23,21 @@ public class ProgramExcecaoPersonalizada {
 
 		Scanner sc = new Scanner(System.in);
 
-		// Número do quarto
-		System.out.print("Número do quarto: ");
-		int roomNumber = sc.nextInt();
+		try {
 
-		// Check-in
-		System.out.print("Check-in (dd/MM/yyyy): ");
-		Date checkIn = Reservation.dateMask.parse(sc.next());
+			// Número do quarto
+			System.out.print("Número do quarto: ");
+			int roomNumber = sc.nextInt();
 
-		// Check-out
-		System.out.print("Check-out (dd/MM/yyyy): ");
-		Date checkOut = Reservation.dateMask.parse(sc.next());
+			// Check-in
+			System.out.print("Check-in (dd/MM/yyyy): ");
+			Date checkIn = Reservation.dateMask.parse(sc.next());
 
-		// Fazendo as exceções por aqui (errado):
-		// Se o check-out não for maior que o check-in
-		if (!checkOut.after(checkIn)) {
-			System.out.println("Erro na reserva: A data do check-out precisa ser posterior a data do check-in");
-		} else {
+			// Check-out
+			System.out.print("Check-out (dd/MM/yyyy): ");
+			Date checkOut = Reservation.dateMask.parse(sc.next());
+
+			// Cria reserva
 			Reservation reservation = new Reservation(roomNumber, checkIn, checkOut);
 			System.out.println("Reserva: " + reservation);
 
@@ -54,13 +53,24 @@ public class ProgramExcecaoPersonalizada {
 			checkOut = Reservation.dateMask.parse(sc.next());
 
 			// Atualiza reserva
-			String error = reservation.updateDate(checkIn, checkOut);
-			if (error != null) {
-				System.out.println("Erro na atualização da reserva: " + error);
-			} else {
-				System.out.println("Reserva: " + reservation);
-			}
+			reservation.updateDate(checkIn, checkOut);
+			System.out.println("Reserva: " + reservation);
 
+		}
+
+		// Se for digitado um número inválido
+		catch (InputMismatchException e) {
+			System.out.println("Digite um número de quarto válido");
+		}
+
+		// Se houver um erro no formato da data informada
+		catch (ParseException e) {
+			System.out.println("Informe uma data válida");
+		}
+		
+		// Capturando erros personalizados
+		catch(IllegalArgumentException e) {
+			System.out.println("Erro na reserva: " + e.getMessage());
 		}
 
 		sc.close();
