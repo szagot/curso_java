@@ -59,11 +59,6 @@ public class ProgramExcecaoPersonalizada {
 
 		}
 
-		// Se for digitado um número inválido
-		catch (InputMismatchException e) {
-			System.out.println("Digite um número de quarto válido");
-		}
-
 		// Se houver um erro no formato da data informada
 		catch (ParseException e) {
 			System.out.println("Informe uma data válida");
@@ -73,6 +68,12 @@ public class ProgramExcecaoPersonalizada {
 		catch(ReservationExcepetion e) {
 			System.out.println("Erro na reserva: " + e.getMessage());
 		}
+
+		// Se for um erro inesperado (como um número inválido, por exemplo)
+		catch (RuntimeException e) {
+			System.out.println("Erro inesperado");
+		}
+
 
 		sc.close();
 
