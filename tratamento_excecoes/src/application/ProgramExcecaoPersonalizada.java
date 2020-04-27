@@ -53,20 +53,11 @@ public class ProgramExcecaoPersonalizada {
 			System.out.print("Check-out (dd/MM/yyyy): ");
 			checkOut = Reservation.dateMask.parse(sc.next());
 
-			// Analisando se as novas datas são posteriores a hoje
-			Date now = new Date();
-			if (checkIn.before(now) || checkOut.before(now)) {
-				System.out.println("Erro na atualização da reserva: A datas devem ser futuras.");
-			}
-
-			// Verificando novamente!
-			else if (!checkOut.after(checkIn)) {
-				System.out.println("Erro na atualização da reserva: A data do check-out precisa ser posterior a data do check-in");
-			}
-
 			// Atualiza reserva
-			else {
-				reservation.updateDate(checkIn, checkOut);
+			String error = reservation.updateDate(checkIn, checkOut);
+			if (error != null) {
+				System.out.println("Erro na atualização da reserva: " + error);
+			} else {
 				System.out.println("Reserva: " + reservation);
 			}
 
