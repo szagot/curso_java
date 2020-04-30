@@ -6,10 +6,11 @@ import model.entities.Invoice;
 public class RentalService {
 	private Double pricePerDay;
 	private Double pricePerHour;
+	// Agora ela depende da interface, e não mais depende da classe específica
+	// BrazilTaxService
+	private TaxService taxService;
 
-	private BrazilTaxService taxService;
-
-	public RentalService(Double pricePerDay, Double pricePerHour, BrazilTaxService taxService) {
+	public RentalService(Double pricePerDay, Double pricePerHour, TaxService taxService) {
 		this.pricePerDay = pricePerDay;
 		this.pricePerHour = pricePerHour;
 		this.taxService = taxService;

@@ -1,6 +1,7 @@
 package model.services;
 
-public class BrazilTaxService {
+// Usando a interface
+public class BrazilTaxService implements TaxService {
 
 	/**
 	 * Retorna a taxa calculada
