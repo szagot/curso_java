@@ -8,8 +8,9 @@ import java.util.Scanner;
 
 import model.entities.CarRental;
 import model.entities.Vehicle;
-import model.services.BrazilTaxService;
+//import model.services.BrazilTaxService;
 import model.services.RentalService;
+import model.services.UsaTaxService;
 
 public class Program {
 	public static void main(String[] args) throws ParseException {
@@ -50,7 +51,10 @@ public class Program {
 		System.out.print("Preço por Dia: ");
 		double pricePerDay = sc.nextDouble();
 
-		RentalService rentalService = new RentalService(pricePerDay, pricePerHour, new BrazilTaxService());
+		// Com a taxa do Brasil
+		// RentalService rentalService = new RentalService(pricePerDay, pricePerHour, new BrazilTaxService());
+		// Com a taxa dos USA
+		RentalService rentalService = new RentalService(pricePerDay, pricePerHour, new UsaTaxService());
 
 		// Processando o aluguel
 		rentalService.processInvoice(cr);
