@@ -8,6 +8,8 @@ public class CalculationService {
 	 * Calcula o máximo de uma lista
 	 * Estende de Comparable para permitir o comparador de arquivos
 	 * 
+	 * List<?> é o super tipo de qualquer tipo de lista
+	 * 
 	 * @param list
 	 * @return
 	 */
