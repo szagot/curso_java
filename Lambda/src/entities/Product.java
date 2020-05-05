@@ -1,18 +1,24 @@
 package entities;
 
-import javax.naming.directory.InvalidAttributesException;
-
 public class Product {
 	private String name;
 	private Double value;
 
 	public Product(String name, Double value) {
-		this.name = name;
-		this.value = value;
+		setName(name);
+		setValue(value);
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		if (name.isEmpty()) {
+			name = "Nome Não Informado";
+		}
+
+		this.name = name;
 	}
 
 	public Double getValue() {

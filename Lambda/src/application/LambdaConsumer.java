@@ -16,17 +16,13 @@ public class LambdaConsumer {
 		list.add(new Product("Tablet", 350.0));
 		list.add(new Product("HD Case", 80.0));
 
-		// Aumentando cada produto em 10% usando Consumer
+		// Aumentando cada produto em 10% usando Consumer e imprimindo
 		// (Se só tiver um comando, não precisa das chaves)
 		list.forEach(x -> {
 			x.setValue(x.getValue() * 1.1);
 			System.out.println(x);
 		});
-
-		System.out.println();
-
-		// Outro jeito de imprimir a lista usando Consumer referenciando o método
-		list.forEach(System.out::println);
+		
 	}
 
 }
