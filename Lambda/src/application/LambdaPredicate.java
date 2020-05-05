@@ -5,7 +5,7 @@ import java.util.List;
 
 import entities.Product;
 
-public class Program {
+public class LambdaPredicate {
 
 	public static void main(String[] args) {
 
