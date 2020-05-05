@@ -35,7 +35,7 @@ public class LendoDados {
 
 		} catch (SQLException e) {
 
-			e.getStackTrace();
+			e.printStackTrace();
 
 		} finally {
 
