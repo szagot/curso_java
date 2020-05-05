@@ -18,13 +18,13 @@ public class LambdaFunction {
 		list.add(new Product("HD Case", 80.0));
 
 		// Gerando uma nova lista com nomes em maiúsculo
-		List<String> names = 
+		List<String> names =
 				// Gerando stream a partir da lista
 				list.stream()
-				// Aplicando a função lambda a cada elemento
-				.map(p -> p.getName().toUpperCase())
-				// Gerando uma lista a partir do stream
-				.collect(Collectors.toList());
+						// Aplicando a função lambda a cada elemento
+						.map(p -> p.getName().toUpperCase())
+						// Gerando uma lista a partir do stream
+						.collect(Collectors.toList());
 
 		// Imprimindo a lista usando Consumer
 		names.forEach(System.out::println);
