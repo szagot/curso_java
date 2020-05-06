@@ -32,8 +32,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller seller) {
-
 		PreparedStatement st = null;
+
 		try {
 
 			st = conn.prepareStatement(
@@ -77,8 +77,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void update(Seller seller) {
-
 		PreparedStatement st = null;
+
 		try {
 
 			st = conn.prepareStatement(
@@ -105,7 +105,21 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			// Preparando a query
+			st = conn.prepareStatement("DELETE FROM seller WHERE seller.Id = ?");
+			st.setInt(1, id);
+
+			// Executando deleção
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
