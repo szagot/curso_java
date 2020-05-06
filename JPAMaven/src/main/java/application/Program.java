@@ -15,9 +15,10 @@ public class Program {
 		Pessoa p3 = new Pessoa(null, "Alini", "alini@gmail.com");
 
 		// Inicia o gerencidor de conexão e acesso a dados do BD
+		// (vide: /JPAMaven/src/main/resources/META-INF/persistence.xml)
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("exemplo-jpa");
 		EntityManager em = emf.createEntityManager();
-		
+
 		// Inicia a transação
 		em.getTransaction().begin();
 		// Persiste os dados no BD
@@ -32,6 +33,9 @@ public class Program {
 		System.out.println(p2);
 		System.out.println(p3);
 
+		// Fecha as conexões
+		em.close();
+		emf.close();
 	}
 
 }
