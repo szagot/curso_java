@@ -19,8 +19,14 @@ public class SellerDaoJDBC implements SellerDao {
 
 	private Connection conn;
 
+	// Para mapear (cookie) os registros, para evitar instâncias repetidas
+	private Map<Integer, Department> deptMap;
+	private Map<Integer, Seller> sellerMap;
+
 	public SellerDaoJDBC(Connection conn) {
 		this.conn = conn;
+		this.deptMap = new HashMap<>();
+		this.sellerMap = new HashMap<>();
 	}
 
 	@Override
@@ -73,44 +79,38 @@ public class SellerDaoJDBC implements SellerDao {
 		return null;
 	}
 
-	/**
-	 * Método auxiliar para instanciar o Seller
-	 * 
-	 * @param rs
-	 * @param department
-	 * @return
-	 * @throws SQLException
-	 */
-	private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException {
-		Seller seller = new Seller();
-		seller.setId(rs.getInt("Id"));
-		seller.setName(rs.getString("Name"));
-		seller.setEmail(rs.getString("Email"));
-		seller.setBaseSalary(rs.getDouble("BaseSalary"));
-		seller.setBirthDate(rs.getDate("BirthDate"));
-		seller.setDepartment(department);
-
-		return seller;
-	}
-
-	/**
-	 * Método auxiliar para declarar o departamento
-	 * 
-	 * @param rs
-	 * @return
-	 * @throws SQLException
-	 */
-	private Department instantiateDepartment(ResultSet rs) throws SQLException {
-		Department department = new Department();
-		department.setId(rs.getInt("DepartmentId"));
-		department.setName(rs.getString("DepName"));
-
-		return department;
-	}
-
 	@Override
 	public List<Seller> findAll() {
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			// Preparando a query
+			st = conn.prepareStatement(
+					"SELECT seller.*,department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id "
+							+ "ORDER BY Name");
+
+			// Executa a query
+			rs = st.executeQuery();
+
+			// Lista e Mapa para verificação de departamento
+			List<Seller> sellers = new ArrayList<>();
+
+			// Percorre pelos resultados
+			while (rs.next()) {
+				// Adiciona o seller com o departamento
+				sellers.add(instantiateSeller(rs, instantiateDepartment(rs)));
+			}
+
+			// Retorna todos os sellers encontrados (ou uma lista vazia)
+			return sellers;
+
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override
@@ -131,24 +131,11 @@ public class SellerDaoJDBC implements SellerDao {
 
 			// Lista e Mapa para verificação de departamento
 			List<Seller> sellers = new ArrayList<>();
-			Map<Integer, Department> map = new HashMap<>();
 
 			// Percorre pelos resultados
 			while (rs.next()) {
-				// Verifica se o departamento já foi instanciado anteriormente
-				int depId = rs.getInt("DepartmentId");
-				Department dep = map.get(depId);
-
-				// Se não foi instanciado
-				if (dep == null) {
-					// Cria a instância
-					dep = instantiateDepartment(rs);
-					// Adiciona ao map
-					map.put(depId, dep);
-				}
-
 				// Adiciona o seller com o departamento
-				sellers.add(instantiateSeller(rs, dep));
+				sellers.add(instantiateSeller(rs, instantiateDepartment(rs)));
 			}
 
 			// Retorna todos os sellers encontrados (ou uma lista vazia)
@@ -162,4 +149,59 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 	}
 
+	/**
+	 * Método auxiliar para declarar o departamento
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		// Verifica se o departamento já foi instanciado anteriormente
+		int depId = rs.getInt("DepartmentId");
+		Department department = deptMap.get(depId);
+
+		// Se não foi instanciado
+		if (department == null) {
+			// Cria a instância
+			department = new Department();
+			department.setId(depId);
+			department.setName(rs.getString("DepName"));
+
+			// Adiciona ao map
+			deptMap.put(depId, department);
+		}
+
+		return department;
+	}
+
+	/**
+	 * Método auxiliar para instanciar o Seller
+	 * 
+	 * @param rs
+	 * @param department
+	 * @return
+	 * @throws SQLException
+	 */
+	private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException {
+		// Verifica se o departamento já foi instanciado anteriormente
+		int sellerId = rs.getInt("Id");
+		Seller seller = sellerMap.get(sellerId);
+
+		// Se não foi instanciado
+		if (seller == null) {
+			seller = new Seller();
+			seller.setId(sellerId);
+			seller.setName(rs.getString("Name"));
+			seller.setEmail(rs.getString("Email"));
+			seller.setBaseSalary(rs.getDouble("BaseSalary"));
+			seller.setBirthDate(rs.getDate("BirthDate"));
+			seller.setDepartment(department);
+
+			// Adiciona ao map
+			sellerMap.put(sellerId, seller);
+		}
+
+		return seller;
+	}
 }

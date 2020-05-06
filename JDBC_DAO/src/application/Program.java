@@ -16,12 +16,27 @@ public class Program {
 		// Testando findById
 		System.out.println("=== TESTE 1: Seller findById ===");
 		Seller seller = sellerDao.findById(3);
+
+		// Testando: Se tudo estiver certo, isso irá alterar todos os registros que
+		// repetirem nessa sessão (apenas na impressão, e não no BD)
+		seller.getDepartment().setName("Teste doido");
+		seller.setName("Doidinho de Pedra");
+
 		System.out.println(seller);
 
 		// Testando findByDeparment
 		System.out.println("\n=== TESTE 2: Seller findByDeparment ===");
 		Department department = new Department(2, null);
-		List<Seller> sellers = sellerDao.findByDepartment(department);
+		List<Seller> sellersDept = sellerDao.findByDepartment(department);
+
+		for (Seller obj : sellersDept) {
+			System.out.println(obj);
+		}
+
+		// Testando findByDeparment
+		System.out.println("\n=== TESTE 3: Seller findAll ===");
+		List<Seller> sellers = sellerDao.findAll();
+
 		for (Seller obj : sellers) {
 			System.out.println(obj);
 		}
