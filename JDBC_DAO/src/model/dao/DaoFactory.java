@@ -1,20 +1,21 @@
 package model.dao;
 
-import model.dao.impl.SellerDAOJDBC;
+import db.DB;
+import model.dao.impl.SellerDaoJDBC;
 
 /**
  * Classe responsável por instanciar os métodos
  */
-public class DAOFactory {
+public class DaoFactory {
 
 	/**
 	 * Retorna a instância de Seller
 	 * 
 	 * @return
 	 */
-	public static SellerDAO createSellerDAO() {
+	public static SellerDao createSellerDAO() {
 		// Usando o drive JDBC
-		return new SellerDAOJDBC();
+		return new SellerDaoJDBC(DB.getConnection());
 	}
 
 }

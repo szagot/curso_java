@@ -2,23 +2,23 @@ package model.dao;
 
 import java.util.List;
 
-import model.entities.Department;
+import model.entities.Seller;
 
-public interface DepartmentDAO {
+public interface SellerDao {
 
 	/**
 	 * Inserção de dados
 	 * 
 	 * @param department
 	 */
-	void insert(Department department);
+	void insert(Seller department);
 
 	/**
 	 * Atualização de dados
 	 * 
 	 * @param department
 	 */
-	void update(Department department);
+	void update(Seller department);
 
 	/**
 	 * Deleção de dados
@@ -33,13 +33,13 @@ public interface DepartmentDAO {
 	 * @param id
 	 * @return
 	 */
-	Department findById(Integer id);
+	Seller findById(Integer id);
 
 	/**
 	 * Traz todos os registros
 	 * 
 	 * @return
 	 */
-	List<Department> findAll();
+	List<Seller> findAll();
 
 }
