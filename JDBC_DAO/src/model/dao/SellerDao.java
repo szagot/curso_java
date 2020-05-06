@@ -10,16 +10,16 @@ public interface SellerDao {
 	/**
 	 * Inserção de dados
 	 * 
-	 * @param department
+	 * @param seller
 	 */
-	void insert(Seller department);
+	void insert(Seller seller);
 
 	/**
 	 * Atualização de dados
 	 * 
-	 * @param department
+	 * @param seller
 	 */
-	void update(Seller department);
+	void update(Seller seller);
 
 	/**
 	 * Deleção de dados

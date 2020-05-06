@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,13 +31,52 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public void insert(Seller department) {
-		// TODO Auto-generated method stub
+	public void insert(Seller seller) {
+
+		PreparedStatement st = null;
+		try {
+
+			st = conn.prepareStatement(
+					"INSERT INTO seller (Name, Email, BirthDate, BaseSalary, DepartmentId) VALUES (?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			st.setString(1, seller.getName());
+			st.setString(2, seller.getEmail());
+			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			st.setDouble(4, seller.getBaseSalary());
+			st.setInt(5, seller.getDepartment().getId());
+
+			// Atualiza o BD e salva os registros afetados
+			int rowsAffected = st.executeUpdate();
+
+			// Pega as chaves geradas se houveram inserções
+			if (rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				// Confirma a existência de registro
+				if (rs.next()) {
+					// Pega o registro da inserção
+					int id = rs.getInt(1);
+					// Salva o id no objeto informado
+					seller.setId(id);
+				}
+				DB.closeResultSet(rs);
+			} else {
+				
+				// Nenhuma linha alterou???
+				throw new DBException("Erro inesperado! Nenhuma linha foi afetada");
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
 	@Override
-	public void update(Seller department) {
+	public void update(Seller seller) {
 		// TODO Auto-generated method stub
 
 	}
@@ -80,7 +120,7 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public List<Seller> findAll() {
+	public List<Seller> findByDepartment(Department department) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -88,8 +128,10 @@ public class SellerDaoJDBC implements SellerDao {
 			// Preparando a query
 			st = conn.prepareStatement(
 					"SELECT seller.*,department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id "
-							+ "ORDER BY Name");
+							+ "WHERE DepartmentId = ? ORDER BY Name");
 
+			// Instanciando parâmetros da query
+			st.setInt(1, department.getId());
 			// Executa a query
 			rs = st.executeQuery();
 
@@ -114,7 +156,7 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public List<Seller> findByDepartment(Department department) {
+	public List<Seller> findAll() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -122,10 +164,8 @@ public class SellerDaoJDBC implements SellerDao {
 			// Preparando a query
 			st = conn.prepareStatement(
 					"SELECT seller.*,department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id "
-							+ "WHERE DepartmentId = ? ORDER BY Name");
+							+ "ORDER BY Name");
 
-			// Instanciando parâmetros da query
-			st.setInt(1, department.getId());
 			// Executa a query
 			rs = st.executeQuery();
 

@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -16,12 +17,6 @@ public class Program {
 		// Testando findById
 		System.out.println("=== TESTE 1: Seller findById ===");
 		Seller seller = sellerDao.findById(3);
-
-		// Testando: Se tudo estiver certo, isso irá alterar todos os registros que
-		// repetirem nessa sessão (apenas na impressão, e não no BD)
-		seller.getDepartment().setName("Teste doido");
-		seller.setName("Doidinho de Pedra");
-
 		System.out.println(seller);
 
 		// Testando findByDeparment
@@ -41,6 +36,12 @@ public class Program {
 			System.out.println(obj);
 		}
 
+		// Testando insert
+		System.out.println("\n=== TESTE 4: Seller insert ===");
+		Seller newSeller = new Seller(null, "Daniel Bispo", "szagot@gmail.com", new Date(), 4000.0, department);
+		sellerDao.insert(newSeller);
+		System.out.println(newSeller);
+		
 	}
 
 }
