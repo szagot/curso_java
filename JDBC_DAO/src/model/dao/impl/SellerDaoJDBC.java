@@ -61,10 +61,10 @@ public class SellerDaoJDBC implements SellerDao {
 				}
 				DB.closeResultSet(rs);
 			} else {
-				
+
 				// Nenhuma linha alterou???
 				throw new DBException("Erro inesperado! Nenhuma linha foi afetada");
-				
+
 			}
 
 		} catch (SQLException e) {
@@ -77,7 +77,29 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void update(Seller seller) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement st = null;
+		try {
+
+			st = conn.prepareStatement(
+					"UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+							+ "WHERE Id = ?");
+
+			st.setString(1, seller.getName());
+			st.setString(2, seller.getEmail());
+			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			st.setDouble(4, seller.getBaseSalary());
+			st.setInt(5, seller.getDepartment().getId());
+			st.setInt(6, seller.getId());
+
+			// Atualiza o BD e salva os registros afetados
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
