@@ -56,22 +56,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 			// Verifica se veio algum resultado
 			if (rs.next()) {
-				// Pegando os dados do departamento
-				Department department = new Department();
-				department.setId(rs.getInt("DepartmentId"));
-				department.setName(rs.getString("DepName"));
-
-				// Pegando os dados do Seller
-				Seller seller = new Seller();
-				seller.setId(rs.getInt("Id"));
-				seller.setName(rs.getString("Name"));
-				seller.setEmail(rs.getString("Email"));
-				seller.setBaseSalary(rs.getDouble("BaseSalary"));
-				seller.setBirthDate(rs.getDate("BirthDate"));
-				seller.setDepartment(department);
-
-				// Retorna o seller
-				return seller;
+				// Retorna o seller com o departamento
+				return instantiateSeller(rs, instantiateDepartment(rs));
 			}
 
 		} catch (SQLException e) {
@@ -82,6 +68,41 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Método auxiliar para instanciar o Seller
+	 * 
+	 * @param rs
+	 * @param department
+	 * @return
+	 * @throws SQLException
+	 */
+	private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("Id"));
+		seller.setName(rs.getString("Name"));
+		seller.setEmail(rs.getString("Email"));
+		seller.setBaseSalary(rs.getDouble("BaseSalary"));
+		seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setDepartment(department);
+
+		return seller;
+	}
+
+	/**
+	 * Método auxiliar para declarar o departamento
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department department = new Department();
+		department.setId(rs.getInt("DepartmentId"));
+		department.setName(rs.getString("DepName"));
+
+		return department;
 	}
 
 	@Override
