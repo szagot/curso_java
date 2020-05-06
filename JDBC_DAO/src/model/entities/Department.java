@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 /**
  * Tabela department
+ * 
+ * É necessário implementar a classe Serializable para permitir exportação ao
+ * banco
  */
 public class Department implements Serializable {
 
