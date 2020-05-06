@@ -9,7 +9,7 @@ import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
 
-public class Program {
+public class ProgramTestSeller {
 
 	public static void main(String[] args) {
 
@@ -31,7 +31,7 @@ public class Program {
 			System.out.println(obj);
 		}
 
-		// Testando findByDeparment
+		// Testando findAll
 		System.out.println("\n=== TESTE 3: Seller findAll ===");
 		List<Seller> sellers = sellerDao.findAll();
 
