@@ -6,6 +6,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.pk.OrderItemPK;
 
 @Entity
@@ -16,7 +18,7 @@ public class OrderItem implements Serializable {
 
 	// ID de chave composta
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 
 	private Integer quantity;
 	private Double price;
@@ -37,7 +39,10 @@ public class OrderItem implements Serializable {
 
 	/**
 	 * Pegando pedido da chave composta
+	 * 
+	 * Usando JsonIgnore para não dar referencia cíclica
 	 */
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
