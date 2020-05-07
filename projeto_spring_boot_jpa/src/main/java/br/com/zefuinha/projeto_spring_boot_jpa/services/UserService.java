@@ -3,6 +3,8 @@ package br.com.zefuinha.projeto_spring_boot_jpa.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -77,14 +79,19 @@ public class UserService {
 	 * @return
 	 */
 	public User update(Long id, User user) {
-		// Prepara um objeto monitorado baseado no ID, sem precisar pegar no BD
-		User entity = repository.getOne(id);
+		try {
+			// Prepara um objeto monitorado baseado no ID, sem precisar pegar no BD
+			User entity = repository.getOne(id);
 
-		// Atualiza os dados
-		updateData(entity, user);
+			// Atualiza os dados
+			updateData(entity, user);
 
-		// Salva no BD
-		return repository.save(entity);
+			// Salva no BD
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			// Se o ID não existir, lança a exceção personalizada para 404
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	/**
