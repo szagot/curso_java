@@ -35,4 +35,14 @@ public class UserService {
 
 		return user.get();
 	}
+
+	/**
+	 * Insere um registo
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public User insert(User user) {
+		return repository.save(user);
+	}
 }
