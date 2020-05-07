@@ -45,4 +45,13 @@ public class UserService {
 	public User insert(User user) {
 		return repository.save(user);
 	}
+
+	/**
+	 * Apaga um registro
+	 * 
+	 * @param id
+	 */
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 }
