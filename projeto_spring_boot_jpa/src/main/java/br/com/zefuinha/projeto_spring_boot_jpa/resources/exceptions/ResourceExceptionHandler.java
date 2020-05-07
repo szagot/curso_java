@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.com.zefuinha.projeto_spring_boot_jpa.services.exceptions.DatabaseException;
 import br.com.zefuinha.projeto_spring_boot_jpa.services.exceptions.ResourceNotFoundException;
 
 /**
@@ -29,7 +30,35 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
 		String error = "Recurso não encontrado";
 		HttpStatus status = HttpStatus.NOT_FOUND;
-		
+
+		StandardError err = new StandardError(
+				// Time do erro
+				Instant.now(),
+				// Status do erro
+				status.value(),
+				// Erro
+				error,
+				// Mensagem
+				e.getMessage(),
+				// URL (path)
+				request.getRequestURI());
+
+		return ResponseEntity.status(status).body(err);
+	}
+
+	/**
+	 * Esse método intercepta qualquer exceção do tipo informado em ExceptionHandler
+	 * e trata aqui
+	 * 
+	 * @param e
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
+		String error = "Erro no Banco de Dados";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
 		StandardError err = new StandardError(
 				// Time do erro
 				Instant.now(),
