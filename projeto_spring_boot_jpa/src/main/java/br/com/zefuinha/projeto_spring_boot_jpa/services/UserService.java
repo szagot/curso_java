@@ -54,4 +54,36 @@ public class UserService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+
+	/**
+	 * Atualiza um registro
+	 * 
+	 * @param id   Indica o ID do registro a ser alterado
+	 * @param user
+	 * @return
+	 */
+	public User update(Long id, User user) {
+		// Prepara um objeto monitorado baseado no ID, sem precisar pegar no BD
+		User entity = repository.getOne(id);
+
+		// Atualiza os dados
+		updateData(entity, user);
+
+		// Salva no BD
+		return repository.save(entity);
+	}
+
+	/**
+	 * Atualiza os dados de entity, baseado no obj user
+	 * 
+	 * @param entity
+	 * @param user
+	 */
+	private void updateData(User entity, User user) {
+		entity.setName(user.getName());
+		entity.setEmail(user.getEmail());
+		entity.setPhone(user.getPhone());
+
+		// Nem ID e nem Senha são atualizados aqui
+	}
 }
