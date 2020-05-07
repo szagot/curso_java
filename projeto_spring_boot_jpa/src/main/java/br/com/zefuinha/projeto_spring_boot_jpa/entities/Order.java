@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.enums.OrderStatus;
 
 @Entity
-@Table(name = "tb_order") // É obrigatório nesse caso pq ORDER é uma palavra reservada do SQL
+@Table(name = "tb_orders") // É obrigatório nesse caso pq ORDER é uma palavra reservada do SQL
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;

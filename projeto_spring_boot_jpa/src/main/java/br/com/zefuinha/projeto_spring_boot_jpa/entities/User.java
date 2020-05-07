@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "tb_user") // Opcional. Colocado apenas para manter o padrão (TOC rs)
+@Table(name = "tb_users") // Opcional. Colocado apenas para manter o padrão (TOC rs)
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
