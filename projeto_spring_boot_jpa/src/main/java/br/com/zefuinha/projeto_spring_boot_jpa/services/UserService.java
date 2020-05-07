@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.User;
 import br.com.zefuinha.projeto_spring_boot_jpa.repositories.UserRepository;
+import br.com.zefuinha.projeto_spring_boot_jpa.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -33,7 +34,8 @@ public class UserService {
 	public User findById(Long id) {
 		Optional<User> user = repository.findById(id);
 
-		return user.get();
+		// Retorna o usuário ou uma exceção personalizada no caso do id não existir
+		return user.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	/**
