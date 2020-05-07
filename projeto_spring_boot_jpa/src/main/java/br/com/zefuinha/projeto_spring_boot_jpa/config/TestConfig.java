@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.Category;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.Order;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.OrderItem;
+import br.com.zefuinha.projeto_spring_boot_jpa.entities.Payment;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.Product;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.User;
 import br.com.zefuinha.projeto_spring_boot_jpa.entities.enums.OrderStatus;
@@ -102,6 +103,13 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+		/**
+		 * Criando pagamento do pedido (um para um não precisa de repositorio)
+		 */
+		Payment pay1 = new Payment(null, Instant.parse("2019-06-21T19:53:07Z"), o1);
+		o1.setPayment(pay1);
+		orderRepository.save(o1);
 
 	}
 
