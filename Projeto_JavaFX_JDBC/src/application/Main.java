@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -30,6 +31,8 @@ public class Main extends Application {
 			primaryStage.setScene(mainScene);
 			// Deine o título
 			primaryStage.setTitle("Projeto JavaFX com JDBC");
+			// Define um ícone do projeto
+			primaryStage.getIcons().add(new Image("/gui/icon.jpg"));
 
 			// Executa
 			primaryStage.show();
