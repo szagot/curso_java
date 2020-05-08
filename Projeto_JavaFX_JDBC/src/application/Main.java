@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -15,12 +15,22 @@ public class Main extends Application {
 
 			// Cria a instancia da minha View principal
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-			Parent parent = loader.load();
-			Scene mainScene = new Scene(parent);
+
+			// Instancia o painel com scroll (já desenhado no builder scene como principal)
+			ScrollPane scrollPane = loader.load();
+
+			// Ajusta os elementos filhos para acompanharem largura e altura da tela
+			scrollPane.setFitToHeight(true);
+			scrollPane.setFitToWidth(true);
+
+			// Define a cena principal
+			Scene mainScene = new Scene(scrollPane);
+
 			// Seta a cena
 			primaryStage.setScene(mainScene);
 			// Deine o título
 			primaryStage.setTitle("Projeto JavaFX com JDBC");
+
 			// Executa
 			primaryStage.show();
 
