@@ -1,13 +1,18 @@
 package gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import gui.util.Alerts;
+import gui.util.Constraints;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
-public class ViewController {
+public class ViewController implements Initializable {
 
 	@FXML
 	private TextField txtNumber1;
@@ -36,6 +41,22 @@ public class ViewController {
 			Alerts.showAlert("Erro!", "Digite apenas números válidos", e.getMessage(), AlertType.ERROR);
 
 		}
+
+	}
+
+	/**
+	 * Executa quando o controlador for criado
+	 */
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		// Marca os campos do tipo double
+		Constraints.setTextFieldDouble(txtNumber1);
+		Constraints.setTextFieldDouble(txtNumber2);
+		
+		// Coloca um limite de caracteres
+		Constraints.setTextFieldMaxLength(txtNumber1, 10);
+		Constraints.setTextFieldMaxLength(txtNumber2, 10);
 
 	}
 
