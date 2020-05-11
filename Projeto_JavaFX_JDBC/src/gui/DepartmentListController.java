@@ -51,7 +51,7 @@ public class DepartmentListController implements Initializable {
 	public void onBtNewAction(ActionEvent event) {
 
 		// Abre a janela de diálogo de cadastro do departamento
-		createDialogForm("/gui/DepartmentForm.fxml", Utils.currentStage(event));
+		createDialogForm(new Department(), "/gui/DepartmentForm.fxml", Utils.currentStage(event));
 
 	}
 
@@ -102,13 +102,20 @@ public class DepartmentListController implements Initializable {
 	/**
 	 * Método auxiliar para criar uma janela de diálogo
 	 * 
-	 * @param parentStage Informa quem foi que chamou a janela de diálogo
+	 * @param department
+	 * @param absoluteName
+	 * @param parentStage
 	 */
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Department department, String absoluteName, Stage parentStage) {
 		try {
 			// Intancia a view
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+
+			// Carrega os dados do departamento informado no formulário
+			DepartmentFormController controller = loader.getController();
+			controller.setDepartment(department);
+			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Entre com os dados do Departamento");
