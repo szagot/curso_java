@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+	public static final Image APP_ICON = new Image("/gui/icon.jpg");
+
 	// Cena (tela) principal
 	private static Scene mainScene;
 
@@ -36,7 +38,7 @@ public class Main extends Application {
 			// Deine o título
 			primaryStage.setTitle("Projeto JavaFX com JDBC");
 			// Define um ícone do projeto
-			primaryStage.getIcons().add(new Image("/gui/icon.jpg"));
+			primaryStage.getIcons().add(APP_ICON);
 
 			// Executa
 			primaryStage.show();

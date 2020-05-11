@@ -1,18 +1,28 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Department;
 import model.services.DepartmentService;
@@ -38,13 +48,25 @@ public class DepartmentListController implements Initializable {
 	private ObservableList<Department> obsList;
 
 	@FXML
-	public void onBtNewAction() {
-		System.out.println("onBtNewAction");
+	public void onBtNewAction(ActionEvent event) {
+
+		// Abre a janela de diálogo de cadastro do departamento
+		createDialogForm("/gui/DepartmentForm.fxml", Utils.currentStage(event));
+
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		initializeNodes();
+	}
+
+	/**
+	 * Inicializa os serviços de departamento
+	 * 
+	 * @param service
+	 */
+	public void setDepartmentService(DepartmentService service) {
+		this.service = service;
 	}
 
 	/**
@@ -78,12 +100,33 @@ public class DepartmentListController implements Initializable {
 	}
 
 	/**
-	 * Inicializa os serviços de departamento
+	 * Método auxiliar para criar uma janela de diálogo
 	 * 
-	 * @param service
+	 * @param parentStage Informa quem foi que chamou a janela de diálogo
 	 */
-	public void setDepartmentService(DepartmentService service) {
-		this.service = service;
-	}
+	private void createDialogForm(String absoluteName, Stage parentStage) {
+		try {
+			// Intancia a view
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
 
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Entre com os dados do Departamento");
+			dialogStage.setScene(new Scene(pane));
+			// Não pode ser redimensionada
+			dialogStage.setResizable(false);
+			// Informa quem é o pai desse diálogo
+			dialogStage.initOwner(parentStage);
+			// Indica que a janela é do tipo MODAL (não permite o acesso da janela anterior
+			// enquanto esta estiver aberta)
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			// Ícone da Janela
+			dialogStage.getIcons().add(Main.APP_ICON);
+			// Mostra a janela
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			Alerts.showAlert("IO Error", "Erro ao abrir a view", e.getMessage(), AlertType.ERROR);
+		}
+	}
 }
