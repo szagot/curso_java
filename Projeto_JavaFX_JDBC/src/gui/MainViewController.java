@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.DepartmentService;
 
 public class MainViewController implements Initializable {
 
@@ -46,8 +47,8 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuItemDepartmentAction() {
 
-		// Abre a janela principal de Departamento
-		loadView("/gui/DepartmentList.fxml");
+		// TODO: Abre a janela principal de Departamento
+		loadView2("/gui/DepartmentList.fxml");
 
 	}
 
@@ -74,7 +75,6 @@ public class MainViewController implements Initializable {
 	 * @param absoluteName
 	 */
 	private synchronized void loadView(String absoluteName) {
-
 		try {
 
 			// Intancia a view
@@ -98,6 +98,42 @@ public class MainViewController implements Initializable {
 			mainVBox.getChildren().add(mainMenu);
 			// Adiciona a janela que está sendo aberta
 			mainVBox.getChildren().addAll(newVBox.getChildren());
+
+		} catch (IOException e) {
+
+			Alerts.showAlert("IO Error", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+		}
+	}
+
+	private void loadView2(String absoluteName) {
+		try {
+
+			// Intancia a view
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+
+			// Abre a tela (que se espera ser do tipo VBox)
+			VBox newVBox = loader.load();
+
+			// Pega a cena (tela) principal para poder vincular a tela que está sendo aberta
+			Scene mainScene = Main.getMainScene();
+			// Pega o primeiro elemento da minha view
+			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+
+			// Guarda o menu (primeiro filho da janela principal)
+			Node mainMenu = mainVBox.getChildren().get(0);
+
+			// Limpa todo mundo do VBox principal
+			mainVBox.getChildren().clear();
+
+			// Recoloca o menu
+			mainVBox.getChildren().add(mainMenu);
+			// Adiciona a janela que está sendo aberta
+			mainVBox.getChildren().addAll(newVBox.getChildren());
+
+			// Iniciando os dados da tabela
+			DepartmentListController controller = loader.getController();
+			controller.setDepartmentService(new DepartmentService());
+			controller.updateTableView();
 
 		} catch (IOException e) {
 
