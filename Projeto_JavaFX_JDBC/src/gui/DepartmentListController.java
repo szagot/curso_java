@@ -3,9 +3,12 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import db.DBException;
+import db.DBIntegratyException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -19,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,6 +46,9 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	@FXML
 	private TableColumn<Department, Department> tableColEdit;
+
+	@FXML
+	private TableColumn<Department, Department> tableColRemove;
 
 	@FXML
 	private Button btNew;
@@ -96,14 +103,15 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		if (service == null) {
 			throw new IllegalStateException("Service não pode ser nulo");
 		}
-
+		
 		// Carrega a lista da tabela
 		List<Department> departments = service.findAll();
 		obsList = FXCollections.observableArrayList(departments);
 		tableViewDepartment.setItems(obsList);
 
-		// Acrescenta o botão de edição para cada linha da tabela
+		// Acrescenta o botão de edição e remoção para cada linha da tabela
 		initEditButtons();
+		initRemoveButtons();
 	}
 
 	/**
@@ -174,4 +182,53 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			}
 		});
 	}
+
+	/**
+	 * Cria botões de remoção
+	 */
+	private void initRemoveButtons() {
+		tableColRemove.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tableColRemove.setCellFactory(param -> new TableCell<Department, Department>() {
+			private final Button button = new Button("Remover");
+
+			@Override
+			protected void updateItem(Department department, boolean empty) {
+				super.updateItem(department, empty);
+				if (department == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(event -> removeEntity(department));
+			}
+		});
+	}
+
+	/**
+	 * Remove a entidade do departamento
+	 * 
+	 * @param department
+	 * @return
+	 */
+	private void removeEntity(Department department) {
+		// Confirma com o usário a deleção
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Deseja apagar esse departamento?");
+
+		// A deleção foi confirmada?
+		if (result.get() == ButtonType.OK) {
+			if (service == null) {
+				throw new IllegalStateException("O serivço não pode ser nulo");
+			}
+
+			try {
+				// Remove o departamento
+				service.remove(department);
+				// Atualiza os dados da tabela
+				updateTableView();
+			} catch (DBIntegratyException e) {
+				Alerts.showAlert("Error IO", "Erro ao remover o departamento", e.getMessage(), AlertType.ERROR);
+			}
+		}
+	}
+
 }
