@@ -2,6 +2,12 @@ package model.entities;
 
 import java.io.Serializable;
 
+/**
+ * Tabela department
+ * 
+ * É necessário implementar a classe Serializable para permitir exportação ao
+ * banco
+ */
 public class Department implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -62,4 +68,5 @@ public class Department implements Serializable {
 	public String toString() {
 		return "Department [id=" + id + ", name=" + name + "]";
 	}
+
 }
