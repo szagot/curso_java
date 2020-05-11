@@ -3,7 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DBException;
 import gui.listeners.DataChangeListener;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Department;
+import model.exceptions.ValidationException;
 import model.services.DepartmentService;
 
 public class DepartmentFormController implements Initializable {
@@ -77,6 +80,9 @@ public class DepartmentFormController implements Initializable {
 
 		} catch (DBException e) {
 			Alerts.showAlert("Erro ", "Erro ao salvar o departamento", e.getMessage(), AlertType.ERROR);
+		} catch (ValidationException e) {
+			// Se houve uma exceção do tipo Validation, mostra no form
+			setErrorMessages(e.getErrors());
 		}
 	}
 
@@ -120,8 +126,21 @@ public class DepartmentFormController implements Initializable {
 	private Department getFormData() {
 		Department department = new Department();
 
+		ValidationException exception = new ValidationException("Erro de validação");
+
 		department.setId(Utils.tryParseToInt(txtId.getText()));
+
+		// O campo nome está vazio?
+		if (txtName.getText() == null || txtName.getText().trim().isEmpty()) {
+			exception.addError("name", "O campo não pode ser vazio");
+		}
+
 		department.setName(txtName.getText());
+
+		// Verifica se teve exceções
+		if (exception.getErrors().size() > 0) {
+			throw exception;
+		}
 
 		return department;
 	}
@@ -133,6 +152,20 @@ public class DepartmentFormController implements Initializable {
 		for (DataChangeListener listener : dataChangeListeners) {
 			// Emite o aviso para cada classe
 			listener.onDataChanged();
+		}
+	}
+
+	/**
+	 * Auxiliar para preencher os erros no formulário
+	 * 
+	 * @param error
+	 */
+	private void setErrorMessages(Map<String, String> errors) {
+		Set<String> fields = errors.keySet();
+
+		// Pega o erro referente a nome
+		if (fields.contains("name")) {
+			lblErrorName.setText(errors.get("name"));
 		}
 	}
 
