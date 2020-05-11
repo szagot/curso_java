@@ -115,6 +115,7 @@ public class DepartmentListController implements Initializable {
 			// Carrega os dados do departamento informado no formulário
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(department);
+			controller.setDepartmentService(new DepartmentService());
 			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
