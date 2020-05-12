@@ -47,6 +47,21 @@ public class Utils {
 	}
 
 	/**
+	 * Retorna o double de dentro de um string. Se não for um double válido, retorna
+	 * nulo
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static Double tryParseToDouble(String str) {
+		try {
+			return Double.parseDouble(str);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+
+	/**
 	 * Formata campos de data
 	 * https://stackoverflow.com/questions/47484280/format-of-date-in-the-javafx-tableview
 	 * 

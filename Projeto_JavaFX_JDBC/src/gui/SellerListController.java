@@ -230,7 +230,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 	 */
 	private void removeEntity(Seller seller) {
 		// Confirma com o usário a deleção
-		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Deseja apagar esse departamento?");
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Deseja apagar esse vendedor?");
 
 		// A deleção foi confirmada?
 		if (result.get() == ButtonType.OK) {
@@ -244,7 +244,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 				// Atualiza os dados da tabela
 				updateTableView();
 			} catch (DBIntegratyException e) {
-				Alerts.showAlert("Error IO", "Erro ao remover o departamento", e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Error IO", "Erro ao remover o vendedor", e.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
