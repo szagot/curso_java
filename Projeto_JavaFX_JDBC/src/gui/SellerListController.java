@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,6 +38,15 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	@FXML
 	private TableColumn<Seller, String> tableColName;
+
+	@FXML
+	private TableColumn<Seller, String> tableColEmail;
+
+	@FXML
+	private TableColumn<Seller, Date> tableColBirthDate;
+
+	@FXML
+	private TableColumn<Seller, Double> tableColBaseSalary;
 
 	@FXML
 	private TableColumn<Seller, Seller> tableColEdit;
@@ -83,6 +93,11 @@ public class SellerListController implements Initializable, DataChangeListener {
 		// Iniciando o comportamento das colunas
 		tableColId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tableColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		tableColBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+		Utils.formatTableColumnDate(tableColBirthDate, "dd/MM/yyyy");
+		tableColBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
+		Utils.formatTableColumnDouble(tableColBaseSalary, 2);
 
 		// Ajustando tabela à janela
 		Stage stage = (Stage) Main.getMainScene().getWindow();
@@ -97,7 +112,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 		if (service == null) {
 			throw new IllegalStateException("Service não pode ser nulo");
 		}
-		
+
 		// Carrega a lista da tabela
 		List<Seller> sellers = service.findAll();
 		obsList = FXCollections.observableArrayList(sellers);
@@ -171,8 +186,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 					return;
 				}
 				setGraphic(button);
-				button.setOnAction(
-						event -> createDialogForm(obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
+				button.setOnAction(event -> createDialogForm(obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
 			}
 		});
 	}
