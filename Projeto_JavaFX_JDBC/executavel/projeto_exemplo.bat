@@ -1,0 +1,1 @@
+"C:\Program Files\Java\jdk-14.0.1\bin\java" --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml -cp projeto_exemplo.jar application.Main
