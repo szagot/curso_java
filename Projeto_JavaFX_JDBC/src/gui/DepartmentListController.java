@@ -131,10 +131,12 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(department);
 			controller.setDepartmentService(new DepartmentService());
-			controller.updateFormData();
 
 			// Se inscreve para escutar os eventos de alteração
 			controller.subscribeDataChangeListener(this);
+
+			// Atualiza os dados do form
+			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Entre com os dados do Departamento");
@@ -152,6 +154,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			dialogStage.showAndWait();
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Error", "Erro ao abrir a view", e.getMessage(), AlertType.ERROR);
 		}
 	}
