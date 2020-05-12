@@ -103,7 +103,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		if (service == null) {
 			throw new IllegalStateException("Service não pode ser nulo");
 		}
-		
+
 		// Carrega a lista da tabela
 		List<Department> departments = service.findAll();
 		obsList = FXCollections.observableArrayList(departments);
@@ -163,6 +163,8 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	/**
 	 * Cria os botões de edição
+	 * https://stackoverflow.com/questions/32282230/fxml-javafx-8-tableview-make-a-delete-button-in-each-row-anddelete-
+	 * the-row-a
 	 */
 	private void initEditButtons() {
 		tableColEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -185,6 +187,8 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	/**
 	 * Cria botões de remoção
+	 * https://stackoverflow.com/questions/32282230/fxml-javafx-8-tableview-make-a-delete-button-in-each-row-anddelete-
+	 * the-row-a
 	 */
 	private void initRemoveButtons() {
 		tableColRemove.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
