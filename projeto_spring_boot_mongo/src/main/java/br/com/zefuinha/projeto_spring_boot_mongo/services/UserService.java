@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.zefuinha.projeto_spring_boot_mongo.domain.User;
+import br.com.zefuinha.projeto_spring_boot_mongo.dto.UserDTO;
 import br.com.zefuinha.projeto_spring_boot_mongo.repositories.UserRepository;
 import br.com.zefuinha.projeto_spring_boot_mongo.services.exceptions.ObjectNotFoundException;
 
@@ -25,5 +26,19 @@ public class UserService {
 		Optional<User> user = repository.findById(id);
 		// Retorna apenas se foi encontrado
 		return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
+	}
+
+	public User insert(User user) {
+		return repository.insert(user);
+	}
+
+	/**
+	 * Converte de um DTO para a Entidade normal
+	 * 
+	 * @param userDTO
+	 * @return
+	 */
+	public User fromDTO(UserDTO userDTO) {
+		return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
 	}
 }
