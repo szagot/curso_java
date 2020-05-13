@@ -32,6 +32,13 @@ public class UserService {
 		return repository.insert(user);
 	}
 
+	public void delete(String id) {
+		// Busca o ID apenas para lançar e exceção caso não exista
+		findById(id);
+		// Deleta
+		repository.deleteById(id);
+	}
+
 	/**
 	 * Converte de um DTO para a Entidade normal
 	 * 
