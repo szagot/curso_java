@@ -39,6 +39,30 @@ public class UserService {
 		repository.deleteById(id);
 	}
 
+	public User update(User user) {
+		// Busca o usuário no BD
+		User newObj = findById(user.getId());
+
+		// Atualiza os dados
+		updateData(newObj, user);
+
+		// Salva
+		return repository.save(newObj);
+	}
+
+	/**
+	 * Auxiliar para atualizar os dados de usuário
+	 * 
+	 * @param newObj
+	 * @param user
+	 */
+	private void updateData(User newObj, User user) {
+
+		newObj.setName(user.getName());
+		newObj.setEmail(user.getEmail());
+
+	}
+
 	/**
 	 * Converte de um DTO para a Entidade normal
 	 * 
