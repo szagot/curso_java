@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.zefuinha.projeto_spring_boot_mongo.domain.Post;
 import br.com.zefuinha.projeto_spring_boot_mongo.domain.User;
 import br.com.zefuinha.projeto_spring_boot_mongo.dto.UserDTO;
 import br.com.zefuinha.projeto_spring_boot_mongo.services.UserService;
@@ -86,6 +87,16 @@ public class UserResource {
 
 		// Resposta completa com headers e body
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping(value = "/{id}/posts")
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+
+		User user = service.findById(id);
+
+		// Resposta completa com headers e body
+		return ResponseEntity.ok().body(user.getPosts());
+
 	}
 
 }
