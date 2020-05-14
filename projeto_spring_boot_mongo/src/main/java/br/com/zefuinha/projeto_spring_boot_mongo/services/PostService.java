@@ -1,5 +1,6 @@
 package br.com.zefuinha.projeto_spring_boot_mongo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,9 @@ public class PostService {
 		Optional<Post> post = repository.findById(id);
 		// Retorna apenas se foi encontrado
 		return post.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
+	}
+
+	public List<Post> findByTitle(String text) {
+		return repository.findByTitleContainingIgnoreCase(text);
 	}
 }
