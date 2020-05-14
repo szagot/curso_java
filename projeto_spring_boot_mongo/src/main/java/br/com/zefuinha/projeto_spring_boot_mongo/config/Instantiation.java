@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import br.com.zefuinha.projeto_spring_boot_mongo.domain.Post;
 import br.com.zefuinha.projeto_spring_boot_mongo.domain.User;
+import br.com.zefuinha.projeto_spring_boot_mongo.dto.AuthorDTO;
 import br.com.zefuinha.projeto_spring_boot_mongo.repositories.PostRepository;
 import br.com.zefuinha.projeto_spring_boot_mongo.repositories.UserRepository;
 
@@ -41,8 +42,8 @@ public class Instantiation implements CommandLineRunner {
 		userRepository.saveAll(Arrays.asList(maria, alex, bob));
 
 		Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu Viagem", "Vou viajar para são paulo, abraços!",
-				maria);
-		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", maria);
+				new AuthorDTO(maria));
+		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
 		postRepository.saveAll(Arrays.asList(post1, post2));
 
 	}
